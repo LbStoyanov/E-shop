@@ -3,7 +3,7 @@
 namespace Catalog.API.Products.GetProducts;
 
 //public record GetProductRequest();
-public record GetProductResponse(IEnumerable<Product> Products);
+public record GetProductsResponse(IEnumerable<Product> Products);
 
 public class GetProductsEndpoint : ICarterModule
 {
@@ -13,12 +13,12 @@ public class GetProductsEndpoint : ICarterModule
         {
             var result = await sender.Send(new GetProductsQuery());
 
-            var response = result.Adapt<GetProductResponse>();
+            var response = result.Adapt<GetProductsResponse>();
 
             return Results.Ok(response);
         })
         .WithName("GetProducts")
-        .Produces<CreateProductResponse>(StatusCodes.Status200OK)
+        .Produces<GetProductsResponse>(StatusCodes.Status200OK)
         .ProducesProblem(StatusCodes.Status400BadRequest)
         .WithSummary("Get Products")
         .WithDescription("Get Products"); ;
