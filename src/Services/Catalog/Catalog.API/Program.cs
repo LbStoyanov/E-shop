@@ -2,15 +2,18 @@ using BuildingBlocks.Behaviors;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var assembly = typeof(Program).Assembly;
 
-builder.Services.AddCarter();
 builder.Services.AddMediatR(config =>
 {
-    config.RegisterServicesFromAssembly(typeof(Program).Assembly);
+    config.RegisterServicesFromAssembly(assembly);
     config.AddOpenBehavior(typeof(ValidationBehavior<,>)); //, means generic
 });
 
-builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
+builder.Services.AddValidatorsFromAssembly(assembly);
+
+
+builder.Services.AddCarter();
 
 builder.Services.AddMarten(options =>
 {
