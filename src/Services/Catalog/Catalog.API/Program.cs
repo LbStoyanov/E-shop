@@ -8,6 +8,8 @@ builder.Services.AddMediatR(config =>
 {
     config.RegisterServicesFromAssembly(assembly);
     config.AddOpenBehavior(typeof(ValidationBehavior<,>)); //, means generic
+    config.AddOpenBehavior(typeof(LoggingBehavior<,>)); //, means generic
+
 });
 
 builder.Services.AddValidatorsFromAssembly(assembly);
