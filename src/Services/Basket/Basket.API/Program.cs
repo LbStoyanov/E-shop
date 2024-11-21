@@ -1,5 +1,4 @@
 
-
 var builder = WebApplication.CreateBuilder(args);
 
 //Add services to the container
@@ -20,6 +19,8 @@ builder.Services.AddMarten(options =>
     options.Schema.For<ShoppingCart>().Identity(x => x.UserName);
 
 }).UseLightweightSessions(); // For better performance
+
+builder.Services.AddScoped<IBasketRepository,BasketRepository>();
 
 var app = builder.Build();
 
