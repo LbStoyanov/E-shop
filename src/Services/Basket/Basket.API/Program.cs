@@ -21,6 +21,23 @@ builder.Services.AddMarten(options =>
 }).UseLightweightSessions(); // For better performance
 
 builder.Services.AddScoped<IBasketRepository,BasketRepository>();
+
+//CALL FOR CACHED SERVICE WITH SCRUTOR LIBRARY
+builder.Services.Decorate<IBasketRepository,CachedBasketRepository>();
+
+//CUSTOM CALL FOR CACHED SERVICE
+//builder.Services.AddScoped<IBasketRepository>(provider =>
+//{
+//    var basketRepository = provider.GetService<IBasketRepository>();
+
+//    return new CachedBasketRepository(basketRepository, provider.GetRequiredService<IDistributedCache>());
+//});
+
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis");
+});
+
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
 var app = builder.Build();
