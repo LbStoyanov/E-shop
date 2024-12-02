@@ -15,12 +15,12 @@ service DiscountProtoService{
 
 
 message GetDiscountRequest{
-	string producName = 1;
+	string productName = 1;
 }
 
 message CouponModel{
 	int32 id = 1;
-	string producNmae = 2;
+	string producName = 2;
 	string description = 3;
 	int32 amount = 4;
 }
