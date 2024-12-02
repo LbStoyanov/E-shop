@@ -28,4 +28,6 @@
     <Protobuf Include="Protos\discount.proto" GrpcServices="Server" />
   </ItemGroup>
 
+  <ProjectExtensions><VisualStudio><UserProperties properties_4launchsettings_1json__JsonSchema="https://download.qt.io/official_releases/qtcreator/latest/installer_source/jsonschemas/project.json" /></VisualStudio></ProjectExtensions>
+
 </Project>
