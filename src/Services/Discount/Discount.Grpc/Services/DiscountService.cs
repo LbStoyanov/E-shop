@@ -43,13 +43,10 @@ public class DiscountService(DiscountContext dbContext, ILogger<DiscountService>
 
     public override async Task<CouponModel> UpdateDiscount(UpdateDiscountRequest request, ServerCallContext context)
     {
-        var coupon = await dbContext.Coupons
-            .FirstOrDefaultAsync(x => x.Id == request.Coupon.Id);
+        var coupon = request.Coupon.Adapt<Coupon>();
 
         if (coupon is null)
-        {
-            throw new RpcException(new Status(StatusCode.NotFound, "Discount not found."));
-        }
+            throw new RpcException(new Status(StatusCode.InvalidArgument, "Invalid request object."));
 
         // Update the coupon properties
         coupon.ProductName = request.Coupon.ProductName;
