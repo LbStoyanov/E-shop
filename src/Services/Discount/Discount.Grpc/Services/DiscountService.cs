@@ -41,14 +41,46 @@ public class DiscountService(DiscountContext dbContext, ILogger<DiscountService>
 
     }
 
-    public override Task<CouponModel> UpdateDiscount(UpdateDiscountRequest request, ServerCallContext context)
+    public override async Task<CouponModel> UpdateDiscount(UpdateDiscountRequest request, ServerCallContext context)
     {
-        return base.UpdateDiscount(request, context);
+        var coupon = await dbContext.Coupons
+            .FirstOrDefaultAsync(x => x.Id == request.Coupon.Id);
+
+        if (coupon is null)
+        {
+            throw new RpcException(new Status(StatusCode.NotFound, "Discount not found."));
+        }
+
+        // Update the coupon properties
+        coupon.ProductName = request.Coupon.ProductName;
+        coupon.Description = request.Coupon.Description;
+        coupon.Amount = request.Coupon.Amount;
+
+        dbContext.Coupons.Update(coupon);
+        await dbContext.SaveChangesAsync();
+
+        logger.LogInformation("Discount updated successfully for ProductName : {ProductName}", coupon.ProductName);
+
+        return coupon.Adapt<CouponModel>();
     }
 
-    public override Task<DeleteDiscountResponse> DeleteDiscount(DeleteDiscountRequest request, ServerCallContext context)
+
+    public override async Task<DeleteDiscountResponse> DeleteDiscount(DeleteDiscountRequest request, ServerCallContext context)
     {
-        return base.DeleteDiscount(request, context);
+        var coupon = await dbContext.Coupons
+            .FirstOrDefaultAsync(x => x.ProductName == request.ProductName);
+
+        if (coupon is null)
+        {
+            throw new RpcException(new Status(StatusCode.NotFound, "Discount not found."));
+        }
+
+        dbContext.Coupons.Remove(coupon);
+        await dbContext.SaveChangesAsync();
+
+        logger.LogInformation("Discount deleted successfully for ProductName : {ProductName}", coupon.ProductName);
+
+        return new DeleteDiscountResponse { Success = true };
     }
 }
 
