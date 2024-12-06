@@ -1,4 +1,5 @@
 
+using Discount.Grpc;
 using HealthChecks.UI.Client;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 
@@ -7,6 +8,7 @@ var builder = WebApplication.CreateBuilder(args);
 //Add services to the container
 var assembly = typeof(Program).Assembly;
 
+//Application Services
 builder.Services.AddCarter();
 builder.Services.AddMediatR(config =>
 {
@@ -15,7 +17,7 @@ builder.Services.AddMediatR(config =>
     config.AddOpenBehavior(typeof(LoggingBehavior<,>));
 });
 
-
+//Data Services
 builder.Services.AddMarten(options =>
 {
     options.Connection(builder.Configuration.GetConnectionString("Database")!);
@@ -23,10 +25,10 @@ builder.Services.AddMarten(options =>
 
 }).UseLightweightSessions(); // For better performance
 
-builder.Services.AddScoped<IBasketRepository,BasketRepository>();
+builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 
 //CALL FOR CACHED SERVICE WITH SCRUTOR LIBRARY
-builder.Services.Decorate<IBasketRepository,CachedBasketRepository>();
+builder.Services.Decorate<IBasketRepository, CachedBasketRepository>();
 
 //CUSTOM CALL FOR CACHED SERVICE
 //builder.Services.AddScoped<IBasketRepository>(provider =>
@@ -41,6 +43,23 @@ builder.Services.AddStackExchangeRedisCache(options =>
     options.Configuration = builder.Configuration.GetConnectionString("Redis");
 });
 
+//gRPC Services
+builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(options =>
+{
+    options.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"]!);
+})
+.ConfigurePrimaryHttpMessageHandler(() => //SECURITY RISKS IN PRODUCTION USE!!!
+{
+     var handler = new HttpClientHandler
+     {
+         ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator
+     };
+    
+     return handler;
+});
+
+
+//Cross-Cutting Services
 builder.Services.AddExceptionHandler<CustomExceptionHandler>();
 
 builder.Services.AddHealthChecks()

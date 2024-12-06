@@ -17,7 +17,7 @@ public class DiscountService(DiscountContext dbContext, ILogger<DiscountService>
         if (coupon is null)
             coupon = new Coupon { ProductName = "No Discount", Amount = 0, Description = "No Discount Description" };
 
-        logger.LogInformation("Discount is retrieved for ProductName : {productName}, Amoung : {amoung}", coupon.ProductName, coupon.Amount);
+        logger.LogInformation("Discount is retrieved for ProductName : {productName}, Amount : {amount}", coupon.ProductName, coupon.Amount);
 
         var couponModel = coupon.Adapt<CouponModel>();
 
