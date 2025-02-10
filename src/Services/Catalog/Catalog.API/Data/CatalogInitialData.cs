@@ -30,7 +30,7 @@ public class CatalogInitialData : IInitialData
          new Product
         {
             Id = Guid.NewGuid(),
-            Name = "Samsung Galaxy S23 Ultra",
+            Name = "Samsung Galaxy S24 Ultra",
             Description = "Some description for phone",
             ImageFile = "product-1.png",
             Price = 1989.99M,
