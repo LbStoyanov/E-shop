@@ -1,5 +1,3 @@
-
-
 using HealthChecks.UI.Client;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,7 +20,7 @@ builder.Services.AddCarter();
 builder.Services.AddMarten(options =>
 {
     options.Connection(builder.Configuration.GetConnectionString("Database")!);
-}).UseLightweightSessions(); //Used for perfrmance
+}).UseLightweightSessions(); //Used for performance
 
 if (builder.Environment.IsDevelopment())
 {

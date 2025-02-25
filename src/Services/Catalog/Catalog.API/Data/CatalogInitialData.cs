@@ -8,7 +8,7 @@ public class CatalogInitialData : IInitialData
     {
         using var session = store.LightweightSession();
 
-        if(await session.Query<Product>().AnyAsync())
+        if (await session.Query<Product>().AnyAsync())
             return;
 
         //Marten UPSERT will cater the existing records
@@ -27,7 +27,8 @@ public class CatalogInitialData : IInitialData
             Price = 1989.99M,
             Category = new List<string>{"Smart Phone"}
         },
-         new Product
+
+        new Product
         {
             Id = Guid.NewGuid(),
             Name = "Samsung Galaxy S24 Ultra",
@@ -36,7 +37,8 @@ public class CatalogInitialData : IInitialData
             Price = 1989.99M,
             Category = new List<string>{"Smart Phone"}
         },
-          new Product
+        
+        new Product
         {
             Id = Guid.NewGuid(),
             Name = "Samsung Galaxy S22 Ultra",
