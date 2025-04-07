@@ -6,7 +6,7 @@ var assembly = typeof(Program).Assembly;
 
 builder.Services.AddMediatR(config =>
 {
-    config.RegisterServicesFromAssembly(assembly);
+    config.RegisterServicesFromAssembly(assembly);//This configuration tells the MediatR library where to find the command and query handlers
     config.AddOpenBehavior(typeof(ValidationBehavior<,>)); //, means generic
     config.AddOpenBehavior(typeof(LoggingBehavior<,>)); //, means generic
 
