@@ -8,7 +8,7 @@ namespace BuildingBlocks.Behaviors;
 public class ValidationBehavior<TRequest, TResponse>
     (IEnumerable<IValidator<TRequest>> validators)
     : IPipelineBehavior<TRequest, TResponse> 
-    where TRequest : ICommand<TResponse>
+    where TRequest : ICommand<TResponse> // The filter here is only for CREATE,UPDATE & DELETE operations thats why inherit from ICommand Interface
 {
     public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
     {

@@ -12,7 +12,7 @@ builder.Services.AddMediatR(config =>
 
 });
 
-builder.Services.AddValidatorsFromAssembly(assembly);
+builder.Services.AddValidatorsFromAssembly(assembly); //This code block scans the assembly for any validators and register them into the project.
 
 
 builder.Services.AddCarter();
